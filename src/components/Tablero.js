@@ -46,8 +46,8 @@ const Tablero = () => {
 
 const TableroFiguere = styled.figure`
 	display: grid;
-	min-width: 40em;
-	min-height: 40em;
+	min-width: 80vh;
+	min-height: 80vh;
 	gap: 0.8em;
 	grid-template-columns: repeat(4, 1fr);
 	grid-template-rows: repeat(4, 1fr);

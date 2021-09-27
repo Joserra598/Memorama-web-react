@@ -1,23 +1,19 @@
 import styled from "styled-components";
 import { ReactComponent as PlayLogo } from "../images/PlayLogo.svg";
+import { useDispatch } from "react-redux";
+import { gameActions } from "../actions";
 
-const Inicio = ({ chageState }) => {
+const Inicio = () => {
+	const dispatch = useDispatch();
+
 	return (
 		<InitialFigure>
-			<PlayLogo onClick={() => chageState(false)} />
+			{/* <PlayLogo onClick={() => chageState(false)} /> */}
+			<PlayLogo onClick={() => dispatch(gameActions.hideMenu())} />
 			<h3>Jugar</h3>
 		</InitialFigure>
 	);
 };
-
-const MainSection = styled.section`
-	display: grid;
-	grid-template-rows: 5rem auto;
-	outline: 1px solid red;
-	width: 100%;
-	min-height: 100vh;
-	place-items: center;
-`;
 
 const InitialFigure = styled.figure`
 	background-color: #ffbec6;
@@ -27,6 +23,7 @@ const InitialFigure = styled.figure`
 	display: grid;
 	place-items: center;
 	box-shadow: 0 5px 1.2em 0 rgba(0, 0, 0, 0.5);
+
 	position: relative;
 
 	& > svg {
@@ -64,7 +61,7 @@ const InitialFigure = styled.figure`
 		font-family: "Open Sans", sans-serif;
 		opacity: 0;
 		pointer-events: none;
-		font-size: 2.3rem;
+		font-size: 2rem;
 		color: hsl(352, 60%, 74%);
 		top: 50%;
 		left: 50%;

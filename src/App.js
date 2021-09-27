@@ -1,40 +1,29 @@
-import React, { useState } from "react";
-import Tablero from "./components/Tablero";
-import Inicio from "./components/Inicio";
-import { CSSTransition } from "react-transition-group";
+import React from "react";
 import styled from "styled-components";
-
-// const App = () => {
-// 	const [initScreen, chageState] = useState(true);
-// 	const [panelScreen, changeStatePanel] = useState(false);
-
-// 	return (
-// 		<>
-// 			<CSSTransition
-// 				in={initScreen}
-// 				timeout={800}
-// 				classNames={"init-page-"}
-// 				unmountOnExit={true}
-// 				onExited={() => changeStatePanel(true)}
-// 			>
-// 				<Inicio chageState={chageState} />
-// 			</CSSTransition>
-
-// 			<CSSTransition
-// 				in={panelScreen}
-// 				timeout={1500}
-// 				classNames={"show-panel-"}
-// 				mountOnEnter={true}
-// 				unmountOnExit={true}
-// 			>
-// 				<Tablero />
-// 			</CSSTransition>
-// 		</>
-// 	);
-// };
+import Head from "./components/head";
+import MainSection from "./components/MainSection";
+import Score from "./components/score";
 
 const App = () => {
-	return <h2>Aquí va todo el contendido</h2>;
+	return (
+		<MainContainer>
+			<Head />
+			<MainSection />
+			<Score player="Player 1" />
+			<Score player="Player 2" />
+		</MainContainer>
+	);
 };
+
+const MainContainer = styled.section`
+	min-height: 99vh;
+	width: 99%;
+	display: grid;
+	grid-template-columns: 20% auto 20%;
+	grid-template-rows: 6rem auto;
+	grid-template-areas:
+		"X header Z"
+		"sideL mainS sideR";
+`;
 
 export default App;

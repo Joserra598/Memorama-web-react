@@ -1,22 +1,26 @@
 import styled from "styled-components";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { CSSTransition } from "react-transition-group";
 import { ReactComponent as Question } from "../images/Icons/questionLogo.svg";
-import { CardContext } from "../context/Cards";
+import { useSelector, useDispatch } from "react-redux";
+import { panelActions, playerActions } from "../actions";
 
 const PanelCard = ({ image, Tablero }) => {
 	const [viewCard, hiddenCard] = useState(true);
 	const [hideCard, showCard] = useState(false);
-	const [status, dispatch] = useContext(CardContext);
+	const cardsStatus = useSelector((reducers) => reducers.cardsStatus);
+	const player = useSelector((reducer) => reducer.playerStatus);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		const { total, current } = status;
+		const { total, current } = cardsStatus;
 
-		if (!current) {
-			if (total.includes(image.id)) return;
-			showCard(false);
-		}
-	}, [status, image]);
+		if (current) return;
+		if (total.includes(image.id)) return;
+		if (!hideCard) return;
+
+		showCard(false);
+	}, [cardsStatus, image]);
 
 	const timeAwait = () => {
 		return new Promise((resolve) => {
@@ -34,12 +38,18 @@ const PanelCard = ({ image, Tablero }) => {
 		await timeAwait();
 		TABLERO.style.pointerEvents = "auto";
 
-		if (status.current) {
-			status.current === image.id
-				? dispatch({ total: [...status.total, image.id], current: null })
-				: dispatch({ ...status, current: null });
+		if (cardsStatus.current) {
+			if (cardsStatus.current === image.id) {
+				dispatch(panelActions.found(image.id));
+				// Para poder agregar un punto es necesario saber el jugador
+				if (player.currentPlayer === "P1") dispatch(playerActions.pointP1());
+				if (player.currentPlayer === "P2") dispatch(playerActions.pointP2());
+			} else {
+				dispatch(panelActions.reset());
+				dispatch(playerActions.changePlayer());
+			}
 		} else {
-			dispatch({ ...status, current: +idCurrent });
+			dispatch(panelActions.serching(idCurrent));
 		}
 	};
 
@@ -89,7 +99,7 @@ const Panel = styled.div`
 	}
 	& > svg {
 		fill: white;
-		transform: scale(2.5);
+		transform: scale(2);
 	}
 
 	&:hover {
